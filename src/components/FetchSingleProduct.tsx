@@ -1,12 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Products } from '../pages/Shop.tsx'
+import CartItem from './CartItem.tsx'
 
 interface SingleProductProps {
     product: Products,
-    onClose: () => void
+    onClose: () => void,
 }
 
-const FetchSingleProduct = ({ product, onClose }: SingleProductProps) => {
+const FetchSingleProduct = ({ product, onClose}: SingleProductProps) => {
+
+        const [ cart, setCart] = useState<{product: Products, quantity: number}[]>([])
+    
+        const handleAddToCart = (product: Products, quantity: number) => {
+            setCart((prevCart) => {
+                const exisitingProduct = prevCart.find((item) => item.product.id === product.id)
+    
+                if (exisitingProduct) {
+                    return prevCart.map((item) =>
+                        item.product.id === product.id ?
+                            { ...item, quantity: item.quantity + quantity } : item
+                    )
+                }
+                return [...prevCart, { product, quantity }]
+            })
+        }
+    
+
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content" onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => e.stopPropagation()}>
@@ -20,7 +39,7 @@ const FetchSingleProduct = ({ product, onClose }: SingleProductProps) => {
                         <h1>{product.title}</h1>
                         <p>{product.description}</p>
                         <h2>${product.price}</h2>
-                        <button>ADD TO CART</button>
+                        <button onClick={() => handleAddToCart}>ADD TO CART</button>
                     </div>
                 </div>
             </div>

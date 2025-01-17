@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar.tsx'
 import FetchSingleProduct from '../components/FetchSingleProduct.tsx'
 
-
 export interface Products {
     id: number,
     title: string,
@@ -17,7 +16,7 @@ const Shop: React.FC = () => {
     const [error, setError] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(true)
     const [singleItem, setSingleItem] = useState<Products | null>(null)
-
+    // const [ cart, setCart] = useState<{product: Products, quantity: number}[]>([])
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -38,6 +37,21 @@ const Shop: React.FC = () => {
         fetchItems()
     }, []
     )
+
+    // const handleAddToCart = (product: Products, quantity: number) => {
+    //     setCart((prevCart) => {
+    //         const exisitingProduct = prevCart.find((item) => item.product.id === product.id)
+
+    //         if (exisitingProduct) {
+    //             return prevCart.map((item) =>
+    //                 item.product.id === product.id ?
+    //                     { ...item, quantity: item.quantity + quantity } : item
+    //             )
+    //         }
+    //         return [...prevCart, { product, quantity }]
+    //     })
+    // }
+
     if (loading) {
         <div>Loading ...</div>
     }
@@ -62,7 +76,7 @@ const Shop: React.FC = () => {
                 ))}
             </div>
             ): (
-                <FetchSingleProduct product={singleItem} onClose={() => setSingleItem(null)}/>
+                <FetchSingleProduct product={singleItem} onClose={() => setSingleItem(null)} />
             )}
         </div>
     )
