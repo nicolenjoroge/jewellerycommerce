@@ -5,26 +5,14 @@ import CartItem from './CartItem.tsx'
 interface SingleProductProps {
     product: Products,
     onClose: () => void,
+    onAdd: (id: number) => void
 }
 
-const FetchSingleProduct = ({ product, onClose}: SingleProductProps) => {
-
-        const [ cart, setCart] = useState<{product: Products, quantity: number}[]>([])
+const FetchSingleProduct = ({ product, onClose, onAdd}: SingleProductProps) => {
     
-        const handleAddToCart = (product: Products, quantity: number) => {
-            setCart((prevCart) => {
-                const exisitingProduct = prevCart.find((item) => item.product.id === product.id)
-    
-                if (exisitingProduct) {
-                    return prevCart.map((item) =>
-                        item.product.id === product.id ?
-                            { ...item, quantity: item.quantity + quantity } : item
-                    )
-                }
-                return [...prevCart, { product, quantity }]
-            })
+        const handleAddToCart = () => {
+            onAdd(product.id)
         }
-    
 
     return (
         <div className="modal-overlay" onClick={onClose}>
